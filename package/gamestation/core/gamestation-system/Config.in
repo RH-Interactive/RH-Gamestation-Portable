@@ -1,0 +1,502 @@
+config BR2_PACKAGE_GAMESTATION_SYSTEM
+    bool "gamestation.linux minimal"
+
+    # minimal system required packages
+    select BR2_PACKAGE_GAMESTATION_INITRAMFS                # initramfs to boot the system
+    select BR2_PACKAGE_GAMESTATION_EMULATIONSTATION         # emulationstation
+    select BR2_PACKAGE_GAMESTATION_THEMES                   # emulationstation theme
+    select BR2_PACKAGE_SSELPH_SCRAPER                    # emulationstation scrapper
+    select BR2_PACKAGE_PYTHON_ES_SCRAPER
+    select BR2_PACKAGE_GAMESTATION_ES_SYSTEM                # emulation station es_systems.cfg generator + default roms
+    select BR2_PACKAGE_GAMESTATION_CONFIGGEN                # emulation station external command launcher
+    select BR2_PACKAGE_TRIGGERHAPPY                      # multimedia/power buttons
+    select BR2_PACKAGE_XOSD                              if BR2_PACKAGE_XSERVER_XORG_SERVER # osd information displaying
+    select BR2_PACKAGE_CIFS_UTILS                        # required for boot mounts
+    select BR2_PACKAGE_HOST_GENIMAGE                     # tool to generate the target image
+    select BR2_TARGET_ROOTFS_SQUASHFS                    # tool to generate the target image
+    select BR2_PACKAGE_DOSFSTOOLS                        # required for fat
+    select BR2_PACKAGE_DOSFSTOOLS_FSCK_FAT               # required for fat
+    select BR2_PACKAGE_DOSFSTOOLS_MKFS_FAT               # required for fat
+    select BR2_PACKAGE_EXFAT                             # required for exfat
+    select BR2_PACKAGE_EXFAT_UTILS                       # required for exfat
+    select BR2_PACKAGE_E2FSPROGS                         # required for ext4
+    select BR2_PACKAGE_NTFS_3G                           # required for ntfs
+    select BR2_PACKAGE_NTFS_3G_NTFSPROGS                 # required for ntfs
+    select BR2_PACKAGE_RASPI2PNG                         if BR2_PACKAGE_GAMESTATION_TARGET_RPI1 || BR2_PACKAGE_GAMESTATION_TARGET_RPI2 || BR2_PACKAGE_GAMESTATION_TARGET_RPI3 # screenshots
+    select BR2_PACKAGE_CONNMAN                           # network manager
+    select BR2_PACKAGE_CONNMAN_WIFI                      # network manager
+    select BR2_PACKAGE_CONNMAN_CLIENT                    # network manager
+    select BR2_PACKAGE_WPA_SUPPLICANT                    # wifi
+    select BR2_PACKAGE_WPA_SUPPLICANT_CLI                # wifi
+    select BR2_PACKAGE_WPA_SUPPLICANT_DBUS_INTROSPECTION # wifi
+    select BR2_PACKAGE_RPI_FIRMWARE                      if BR2_PACKAGE_GAMESTATION_TARGET_RPI1 || BR2_PACKAGE_GAMESTATION_TARGET_RPI2 || BR2_PACKAGE_GAMESTATION_TARGET_RPI3 # rpi firmwares
+    select BR2_PACKAGE_RPI_WIFI_FIRMWARE                 if BR2_PACKAGE_GAMESTATION_TARGET_RPI1 || BR2_PACKAGE_GAMESTATION_TARGET_RPI2 || BR2_PACKAGE_GAMESTATION_TARGET_RPI3 # rpi wifi firmware
+    select BR2_PACKAGE_RPI_BT_FIRMWARE                   if BR2_PACKAGE_GAMESTATION_TARGET_RPI1 || BR2_PACKAGE_GAMESTATION_TARGET_RPI2 || BR2_PACKAGE_GAMESTATION_TARGET_RPI3 # rpi bluetooth firmware
+    select BR2_PACKAGE_DROPBEAR                          # ssh server
+    select BR2_PACKAGE_BLUEZ5_UTILS                      # bluetooth
+    select BR2_PACKAGE_BLUEZ5_UTILS_CLIENT               # bluetooth
+    select BR2_PACKAGE_BLUEZ5_UTILS_TEST                 # bluetooth
+    select BR2_PACKAGE_BLUEZ5_UTILS_PLUGINS_SIXAXIS      # bluetooth
+    select BR2_PACKAGE_BLUEZ5_UTILS_DEPRECATED           # bluetooth
+    select BR2_PACKAGE_QTSIXA_SHANWAN                    # ps3 pad
+    select BR2_PACKAGE_UTIL_LINUX_RFKILL                 # bluetooth
+    select BR2_PACKAGE_BLUEZ_ALSA                        # bluetooth audio devices
+    select BR2_PACKAGE_DBUS_PYTHON                       # required for bluetooth scripts
+    select BR2_PACKAGE_WIRINGPI                          if BR2_PACKAGE_GAMESTATION_TARGET_RPI1 || BR2_PACKAGE_GAMESTATION_TARGET_RPI2 || BR2_PACKAGE_GAMESTATION_TARGET_RPI3 # gpio
+    select BR2_PACKAGE_PARTED                            # partition management (for the first boot)
+    select BR2_PACKAGE_USBMOUNT                          # usb key/sd card mounter
+    select BR2_PACKAGE_USBUTILS                          # usb key/sd card tools
+    select BR2_PACKAGE_WGET                              # download tools
+    select BR2_PACKAGE_CURL                              # download tools
+    select BR2_PACKAGE_CA_CERTIFICATES                   # ssl certificates
+    select BR2_PACKAGE_SDL2_OPENGLES                     if BR2_PACKAGE_GAMESTATION_TARGET_RPI1 || BR2_PACKAGE_GAMESTATION_TARGET_RPI2      || BR2_PACKAGE_GAMESTATION_TARGET_RPI3 || \
+                                                            BR2_PACKAGE_GAMESTATION_TARGET_XU4  || BR2_PACKAGE_GAMESTATION_TARGET_LEGACYXU4 || \
+							    BR2_PACKAGE_GAMESTATION_TARGET_ROCKPRO64 || \
+							    BR2_PACKAGE_GAMESTATION_TARGET_C2   || \
+							    BR2_PACKAGE_GAMESTATION_TARGET_S905 || BR2_PACKAGE_GAMESTATION_TARGET_S912 # opengles for sdl2
+    select BR2_PACKAGE_SDL2_KMSDRM                       if BR2_PACKAGE_GAMESTATION_TARGET_ROCKPRO64
+    select BR2_PACKAGE_LIBDRM                            if BR2_PACKAGE_GAMESTATION_TARGET_ROCKPRO64 # required for BR2_PACKAGE_SDL2_KMSDRM
+    select BR2_PACKAGE_LIRC_TOOLS                        # lirc (remote control)
+    select BR2_SYSTEM_ENABLE_NLS                         # locales
+    select BR2_PACKAGE_ACPID                             if BR2_PACKAGE_GAMESTATION_TARGET_X86 || BR2_PACKAGE_GAMESTATION_TARGET_X86_64
+    select BR2_PACKAGE_GAMESTATION_DESKTOPAPPS              if BR2_PACKAGE_XSERVER_XORG_SERVER # gamestation applications config and scripts
+    select BR2_PACKAGE_LEAFPAD                           if BR2_PACKAGE_XSERVER_XORG_SERVER # text editor
+    select BR2_PACKAGE_PCMANFM                           if BR2_PACKAGE_XSERVER_XORG_SERVER # file manager
+    select BR2_PACKAGE_ADWAITA_ICON_THEME                if BR2_PACKAGE_PCMANFM             # theme for file manager
+    select BR2_PACKAGE_XTERM                             if BR2_PACKAGE_XSERVER_XORG_SERVER # terminal
+    select BR2_PACKAGE_MATCHBOX                          if BR2_PACKAGE_XSERVER_XORG_SERVER # window manager
+    select BR2_PACKAGE_AVAHI                             # service discovery on local network
+    select BR2_PACKAGE_AVAHI_DAEMON                      # ping gamestation.local
+    select BR2_PACKAGE_AVAHI_LIBDNSSD_COMPATIBILITY      # bonjour
+    select BR2_PACKAGE_NTP
+    select BR2_PACKAGE_RSYNC
+    select BR2_PACKAGE_SAMBA4                            # samba
+    select BR2_PACKAGE_LIBOPENSSL_BIN                    # required to encode the wifi password
+
+    # alsa utils
+    select BR2_PACKAGE_ALSA_UTILS
+    select BR2_PACKAGE_ALSA_UTILS_AMIXER
+    select BR2_PACKAGE_ALSA_UTILS_APLAY
+
+    # xorg
+    select BR2_PACKAGE_GAMESTATION_XORG                     if BR2_PACKAGE_GAMESTATION_TARGET_X86  || BR2_PACKAGE_GAMESTATION_TARGET_X86_64
+
+    # compression tools
+    select BR2_PACKAGE_UNZIP                             # for /gamestation/share/system/upgrade/share.zip
+    select BR2_PACKAGE_XZ                                # for updates
+
+    help
+      Install the gamestation.linux system files
+
+choice
+        prompt "gamestation.linux target"
+        default BR2_PACKAGE_GAMESTATION_TARGET_RPI2
+        help
+          Select gamestation.linux target hardware
+
+config BR2_PACKAGE_GAMESTATION_TARGET_RPI1
+        bool "rpi1"
+
+config BR2_PACKAGE_GAMESTATION_TARGET_RPI2
+        bool "rpi2"
+
+config BR2_PACKAGE_GAMESTATION_TARGET_RPI3
+        bool "rpi3"
+
+config BR2_PACKAGE_GAMESTATION_TARGET_XU4
+        bool "xu4"
+
+config BR2_PACKAGE_GAMESTATION_TARGET_LEGACYXU4
+        bool "legacyxu4"
+
+config BR2_PACKAGE_GAMESTATION_TARGET_C2
+        bool "c2"
+
+config BR2_PACKAGE_GAMESTATION_TARGET_S905
+        bool "s905"
+
+config BR2_PACKAGE_GAMESTATION_TARGET_S912
+        bool "s912"
+
+config BR2_PACKAGE_GAMESTATION_TARGET_X86
+        bool "x86"
+
+config BR2_PACKAGE_GAMESTATION_TARGET_X86_64
+        bool "x86_64"
+
+config BR2_PACKAGE_GAMESTATION_TARGET_ROCKPRO64
+        bool "rock64pro"
+
+endchoice
+
+config BR2_PACKAGE_GAMESTATION_EXTRAS
+       bool "gamestation.linux tools packages selection"
+       #select BR2_PACKAGE_VIRTUALGAMEPADS # web virtual gamepads
+       help
+        Tools to extends the gamestation system (but not required)
+
+config BR2_PACKAGE_GAMESTATION_TOOLS
+       bool "gamestation.linux system tools packages selection"
+       select BR2_PACKAGE_JSTEST2 # joysticks tester
+       select BR2_PACKAGE_EVTEST  # joysticks tester
+       select BR2_PACKAGE_VIM     # basic vi emulator
+       select BR2_PACKAGE_NANO    # basic nano emulator
+       select BR2_PACKAGE_ZIP     # zip tool
+       select BR2_PACKAGE_P7ZIP   # zip tool
+
+       help
+        System tools
+
+#### systems ####
+config BR2_PACKAGE_GAMESTATION_ALL_SYSTEMS
+        bool "gamestation.linux all emulators packages selection"
+
+        select BR2_PACKAGE_GAMESTATION_RETROARCH   # ALL # retroarch (multiple systems)
+        select BR2_PACKAGE_MOONLIGHT_EMBEDDED   # ALL # moonlight
+        select BR2_PACKAGE_LINAPPLE_PIE         if BR2_PACKAGE_GAMESTATION_TARGET_RPI2 || BR2_PACKAGE_GAMESTATION_TARGET_RPI3 || \
+                                                   BR2_PACKAGE_GAMESTATION_TARGET_X86  || BR2_PACKAGE_GAMESTATION_TARGET_X86_64 # apple II
+        select BR2_PACKAGE_GAMESTATION_MUPEN64     if BR2_PACKAGE_GAMESTATION_TARGET_RPI2 || BR2_PACKAGE_GAMESTATION_TARGET_RPI3      || \
+                                                   BR2_PACKAGE_GAMESTATION_TARGET_X86  || BR2_PACKAGE_GAMESTATION_TARGET_X86_64    || \
+						   BR2_PACKAGE_GAMESTATION_TARGET_XU4  || BR2_PACKAGE_GAMESTATION_TARGET_LEGACYXU4 || \
+						   BR2_PACKAGE_GAMESTATION_TARGET_C2   || \
+						   BR2_PACKAGE_GAMESTATION_TARGET_S905 || BR2_PACKAGE_GAMESTATION_TARGET_S912      || \
+                                                   BR2_PACKAGE_GAMESTATION_TARGET_ROCKPRO64 # mupen64 (n64)
+        select BR2_PACKAGE_REICAST              if BR2_PACKAGE_GAMESTATION_TARGET_RPI3 || \
+                                                   BR2_PACKAGE_GAMESTATION_TARGET_X86  || BR2_PACKAGE_GAMESTATION_TARGET_X86_64    || \
+						   BR2_PACKAGE_GAMESTATION_TARGET_XU4  || BR2_PACKAGE_GAMESTATION_TARGET_LEGACYXU4 || \
+                                                   BR2_PACKAGE_GAMESTATION_TARGET_ROCKPRO64 # dreamcast
+        select BR2_PACKAGE_PPSSPP15             if BR2_PACKAGE_GAMESTATION_TARGET_RPI3
+        select BR2_PACKAGE_PPSSPP               if BR2_PACKAGE_GAMESTATION_TARGET_X86  || BR2_PACKAGE_GAMESTATION_TARGET_X86_64    || \
+                                                   BR2_PACKAGE_GAMESTATION_TARGET_XU4  || BR2_PACKAGE_GAMESTATION_TARGET_LEGACYXU4 || \
+                                                   BR2_PACKAGE_GAMESTATION_TARGET_C2   || BR2_PACKAGE_GAMESTATION_TARGET_S905      || \
+                                                   BR2_PACKAGE_GAMESTATION_TARGET_ROCKPRO64 # psp
+        select BR2_PACKAGE_ADVANCEMAME          if BR2_PACKAGE_GAMESTATION_TARGET_RPI2 || BR2_PACKAGE_GAMESTATION_TARGET_RPI3 # mame
+        select BR2_PACKAGE_PIFBA                if BR2_PACKAGE_GAMESTATION_TARGET_RPI1 || BR2_PACKAGE_GAMESTATION_TARGET_RPI2 || BR2_PACKAGE_GAMESTATION_TARGET_RPI3 # fba
+        select BR2_PACKAGE_SCUMMVM              # ALL # scummvm
+        select BR2_PACKAGE_DOSBOX               # ALL # dos
+        select BR2_PACKAGE_VICE                 # ALL # c64
+        select BR2_PACKAGE_AMIBERRY             if BR2_PACKAGE_GAMESTATION_TARGET_RPI1 || BR2_PACKAGE_GAMESTATION_TARGET_RPI2 || BR2_PACKAGE_GAMESTATION_TARGET_RPI3 # amiga
+        select BR2_PACKAGE_FSUAE                if BR2_PACKAGE_GAMESTATION_TARGET_X86  || BR2_PACKAGE_GAMESTATION_TARGET_X86_64
+        select BR2_PACKAGE_FSUAE_CAPSIMG_PLUGIN if BR2_PACKAGE_GAMESTATION_TARGET_X86  || BR2_PACKAGE_GAMESTATION_TARGET_X86_64
+        select BR2_PACKAGE_DOLPHIN_EMU          if BR2_PACKAGE_GAMESTATION_TARGET_X86_64
+	select BR2_PACKAGE_PCSX2                if BR2_PACKAGE_GAMESTATION_TARGET_X86
+	select BR2_PACKAGE_PCSX2_AVX2           if BR2_PACKAGE_GAMESTATION_TARGET_X86
+	select BR2_PACKAGE_PCSX2_X86            if BR2_PACKAGE_GAMESTATION_TARGET_X86_64
+
+        help
+          All avaible systems for the selected architecture
+
+config BR2_PACKAGE_GAMESTATION_RETROARCH
+        bool "gamestation.linux Retroarch packages selection"
+        select BR2_PACKAGE_RETROARCH
+        select BR2_PACKAGE_LIBRETRO_CHEATS
+        select BR2_PACKAGE_GAMESTATION_BEZEL
+	select BR2_PACKAGE_GAMESTATION_SHADERS
+
+        # n64
+        select BR2_PACKAGE_LIBRETRO_MUPEN64PLUS       if BR2_PACKAGE_GAMESTATION_TARGET_RPI2 || BR2_PACKAGE_GAMESTATION_TARGET_RPI3      || \
+                                                         BR2_PACKAGE_GAMESTATION_TARGET_X86  || BR2_PACKAGE_GAMESTATION_TARGET_X86_64    || \
+							 BR2_PACKAGE_GAMESTATION_TARGET_XU4  || BR2_PACKAGE_GAMESTATION_TARGET_LEGACYXU4 || \
+							 BR2_PACKAGE_GAMESTATION_TARGET_C2   || \
+							 BR2_PACKAGE_GAMESTATION_TARGET_S905 || BR2_PACKAGE_GAMESTATION_TARGET_S912
+        select BR2_PACKAGE_LIBRETRO_PARALLEL_N64      if BR2_PACKAGE_GAMESTATION_TARGET_RPI2 || BR2_PACKAGE_GAMESTATION_TARGET_RPI3      || \
+                                                         BR2_PACKAGE_GAMESTATION_TARGET_X86  || BR2_PACKAGE_GAMESTATION_TARGET_X86_64    || \
+							 BR2_PACKAGE_GAMESTATION_TARGET_XU4  || BR2_PACKAGE_GAMESTATION_TARGET_LEGACYXU4 || \
+							 BR2_PACKAGE_GAMESTATION_TARGET_C2   || \
+							 BR2_PACKAGE_GAMESTATION_TARGET_S905 || BR2_PACKAGE_GAMESTATION_TARGET_S912
+        # snes
+        select BR2_PACKAGE_LIBRETRO_SNES9X            if BR2_PACKAGE_GAMESTATION_TARGET_RPI3 || \
+                                                         BR2_PACKAGE_GAMESTATION_TARGET_X86  || BR2_PACKAGE_GAMESTATION_TARGET_X86_64    || \
+                                                         BR2_PACKAGE_GAMESTATION_TARGET_XU4  || BR2_PACKAGE_GAMESTATION_TARGET_LEGACYXU4 || \
+                                                         BR2_PACKAGE_GAMESTATION_TARGET_C2   || \
+                                                         BR2_PACKAGE_GAMESTATION_TARGET_S905 || BR2_PACKAGE_GAMESTATION_TARGET_S912      || \
+                                                         BR2_PACKAGE_GAMESTATION_TARGET_ROCKPRO64 # SNES9X
+        select BR2_PACKAGE_LIBRETRO_SNES9X_NEXT       # ALL
+        select BR2_PACKAGE_LIBRETRO_POCKETSNES        if BR2_PACKAGE_GAMESTATION_TARGET_RPI1 || BR2_PACKAGE_GAMESTATION_TARGET_RPI2 || BR2_PACKAGE_GAMESTATION_TARGET_RPI3 || \
+	                                                 BR2_PACKAGE_GAMESTATION_TARGET_XU4 || BR2_PACKAGE_GAMESTATION_TARGET_LEGACYXU4
+        # others
+        select BR2_PACKAGE_LIBRETRO_ATARI800          # ALL
+        select BR2_PACKAGE_LIBRETRO_CATSFC            # ALL
+        select BR2_PACKAGE_LIBRETRO_BEETLE_VB         # ALL
+        select BR2_PACKAGE_LIBRETRO_PICODRIVE         # ALL
+        select BR2_PACKAGE_LIBRETRO_GENESISPLUSGX     # ALL
+        select BR2_PACKAGE_LIBRETRO_GAMBATTE          # ALL
+        select BR2_PACKAGE_LIBRETRO_STELLA            # ALL
+        select BR2_PACKAGE_LIBRETRO_PCSX              if BR2_PACKAGE_GAMESTATION_TARGET_RPI2 || BR2_PACKAGE_GAMESTATION_TARGET_RPI3      || \
+                                                         BR2_PACKAGE_GAMESTATION_TARGET_X86  || BR2_PACKAGE_GAMESTATION_TARGET_X86_64    || \
+							 BR2_PACKAGE_GAMESTATION_TARGET_XU4  || BR2_PACKAGE_GAMESTATION_TARGET_LEGACYXU4 || \
+							 BR2_PACKAGE_GAMESTATION_TARGET_C2   || \
+							 BR2_PACKAGE_GAMESTATION_TARGET_S905 || BR2_PACKAGE_GAMESTATION_TARGET_S912      || \
+							 BR2_PACKAGE_GAMESTATION_TARGET_ROCKPRO64 # PCSX
+        select BR2_PACKAGE_LIBRETRO_FREEINTV          # ALL
+        select BR2_PACKAGE_LIBRETRO_FCEUMM            # ALL
+        select BR2_PACKAGE_LIBRETRO_FCEUNEXT          # ALL
+        select BR2_PACKAGE_LIBRETRO_NESTOPIA          # ALL
+        select BR2_PACKAGE_LIBRETRO_IMAME             if BR2_PACKAGE_GAMESTATION_TARGET_RPI1 || BR2_PACKAGE_GAMESTATION_TARGET_RPI2 || BR2_PACKAGE_GAMESTATION_TARGET_RPI3
+        select BR2_PACKAGE_LIBRETRO_SCUMMVM           if BR2_PACKAGE_GAMESTATION_TARGET_RPI2 || BR2_PACKAGE_GAMESTATION_TARGET_RPI3      || \
+                                                         BR2_PACKAGE_GAMESTATION_TARGET_X86  || BR2_PACKAGE_GAMESTATION_TARGET_X86_64    || \
+                                                         BR2_PACKAGE_GAMESTATION_TARGET_XU4  || BR2_PACKAGE_GAMESTATION_TARGET_LEGACYXU4 || \
+							 BR2_PACKAGE_GAMESTATION_TARGET_C2   || \
+							 BR2_PACKAGE_GAMESTATION_TARGET_S905 || BR2_PACKAGE_GAMESTATION_TARGET_S912      || \
+							 BR2_PACKAGE_GAMESTATION_TARGET_ROCKPRO64 # SCUMMVM
+        select BR2_PACKAGE_LIBRETRO_BEETLE_PCE        # ALL
+        select BR2_PACKAGE_LIBRETRO_METEOR            # ALL
+        select BR2_PACKAGE_LIBRETRO_FMSX              # ALL
+        select BR2_PACKAGE_LIBRETRO_BLUEMSX           # ALL
+        select BR2_PACKAGE_LIBRETRO_GPSP              # ALL
+        select BR2_PACKAGE_LIBRETRO_FBA               # ALL
+        select BR2_PACKAGE_LIBRETRO_GW                # ALL
+        select BR2_PACKAGE_LIBRETRO_PRBOOM            # ALL
+        select BR2_PACKAGE_LIBRETRO_BEETLE_NGP        # ALL
+        select BR2_PACKAGE_LIBRETRO_VECX              # ALL
+        select BR2_PACKAGE_LIBRETRO_BEETLE_LYNX       # ALL
+        select BR2_PACKAGE_LIBRETRO_LUTRO             # ALL
+        select BR2_PACKAGE_LIBRETRO_BEETLE_WSWAN      # ALL
+        select BR2_PACKAGE_LIBRETRO_BEETLE_SUPERGRAFX # ALL
+        select BR2_PACKAGE_LIBRETRO_NXENGINE          # ALL
+        select BR2_PACKAGE_LIBRETRO_PROSYSTEM         # ALL
+        select BR2_PACKAGE_LIBRETRO_TGBDUAL           # ALL
+        select BR2_PACKAGE_LIBRETRO_MGBA              # ALL
+        select BR2_PACKAGE_LIBRETRO_MAME2003          # ALL
+        select BR2_PACKAGE_LIBRETRO_MAME2003_PLUS     # ALL
+        select BR2_PACKAGE_LIBRETRO_MAME2010          if BR2_PACKAGE_GAMESTATION_TARGET_RPI2 || BR2_PACKAGE_GAMESTATION_TARGET_RPI3      || \
+                                                         BR2_PACKAGE_GAMESTATION_TARGET_X86  || BR2_PACKAGE_GAMESTATION_TARGET_X86_64    || \
+                                                         BR2_PACKAGE_GAMESTATION_TARGET_XU4  || BR2_PACKAGE_GAMESTATION_TARGET_LEGACYXU4 || \
+							 BR2_PACKAGE_GAMESTATION_TARGET_C2   || \
+							 BR2_PACKAGE_GAMESTATION_TARGET_S905 || BR2_PACKAGE_GAMESTATION_TARGET_S912      || \
+							 BR2_PACKAGE_GAMESTATION_TARGET_ROCKPRO64 # MAME2010
+        select BR2_PACKAGE_LIBRETRO_FUSE              # ALL
+        select BR2_PACKAGE_LIBRETRO_CAP32             # ALL
+        select BR2_PACKAGE_LIBRETRO_81                # ALL
+        select BR2_PACKAGE_LIBRETRO_O2EM              # ALL
+        select BR2_PACKAGE_LIBRETRO_HATARI            # ALL
+        select BR2_PACKAGE_LIBRETRO_QUICKNES          # ALL
+        select BR2_PACKAGE_LIBRETRO_PX68K             # ALL
+        select BR2_PACKAGE_LIBRETRO_YABAUSE           if BR2_PACKAGE_GAMESTATION_TARGET_X86  || BR2_PACKAGE_GAMESTATION_TARGET_X86_64    || \
+                                                         BR2_PACKAGE_GAMESTATION_TARGET_XU4  || BR2_PACKAGE_GAMESTATION_TARGET_LEGACYXU4 || \
+                                                         BR2_PACKAGE_GAMESTATION_TARGET_ROCKPRO64 # YABAUSE
+        select BR2_PACKAGE_LIBRETRO_4DO               if BR2_PACKAGE_GAMESTATION_TARGET_X86  || BR2_PACKAGE_GAMESTATION_TARGET_X86_64    || \
+                                                         BR2_PACKAGE_GAMESTATION_TARGET_XU4  || BR2_PACKAGE_GAMESTATION_TARGET_LEGACYXU4 || \
+							 BR2_PACKAGE_GAMESTATION_TARGET_S905 || BR2_PACKAGE_GAMESTATION_TARGET_S912      || \
+							 BR2_PACKAGE_GAMESTATION_TARGET_ROCKPRO64 # 4DO
+        select BR2_PACKAGE_LIBRETRO_VIRTUALJAGUAR     if BR2_PACKAGE_GAMESTATION_TARGET_X86  || BR2_PACKAGE_GAMESTATION_TARGET_X86_64    || \
+                                                         BR2_PACKAGE_GAMESTATION_TARGET_XU4  || BR2_PACKAGE_GAMESTATION_TARGET_LEGACYXU4 || \
+							 BR2_PACKAGE_GAMESTATION_TARGET_C2   || \
+							 BR2_PACKAGE_GAMESTATION_TARGET_S905 || BR2_PACKAGE_GAMESTATION_TARGET_S912      || \
+							 BR2_PACKAGE_GAMESTATION_TARGET_ROCKPRO64 # VIRTUALJAGUAR
+        select BR2_PACKAGE_LIBRETRO_UAE               if BR2_PACKAGE_GAMESTATION_TARGET_X86  || BR2_PACKAGE_GAMESTATION_TARGET_X86_64    || \
+                                                         BR2_PACKAGE_GAMESTATION_TARGET_XU4  || BR2_PACKAGE_GAMESTATION_TARGET_LEGACYXU4 || \
+							 BR2_PACKAGE_GAMESTATION_TARGET_C2   || \
+							 BR2_PACKAGE_GAMESTATION_TARGET_S905 || BR2_PACKAGE_GAMESTATION_TARGET_S912
+        select BR2_PACKAGE_LIBRETRO_BEETLE_PCFX       if BR2_PACKAGE_GAMESTATION_TARGET_X86  || BR2_PACKAGE_GAMESTATION_TARGET_X86_64    || \
+                                                     	 BR2_PACKAGE_GAMESTATION_TARGET_XU4  || BR2_PACKAGE_GAMESTATION_TARGET_LEGACYXU4 || \
+							 BR2_PACKAGE_GAMESTATION_TARGET_ROCKPRO64 # PCFX
+        select BR2_PACKAGE_LIBRETRO_DESMUME           if BR2_PACKAGE_GAMESTATION_TARGET_X86  || BR2_PACKAGE_GAMESTATION_TARGET_X86_64
+        select BR2_PACKAGE_LIBRETRO_IMAGEVIEWER       if BR2_PACKAGE_GAMESTATION_TARGET_X86  || BR2_PACKAGE_GAMESTATION_TARGET_X86_64
+        select BR2_PACKAGE_LIBRETRO_BEETLE_PSX        if BR2_PACKAGE_GAMESTATION_TARGET_X86  || BR2_PACKAGE_GAMESTATION_TARGET_X86_64    || \
+                                                      	 BR2_PACKAGE_GAMESTATION_TARGET_XU4  || BR2_PACKAGE_GAMESTATION_TARGET_LEGACYXU4 || \
+							 BR2_PACKAGE_GAMESTATION_TARGET_C2   || \
+							 BR2_PACKAGE_GAMESTATION_TARGET_S905 || BR2_PACKAGE_GAMESTATION_TARGET_S912      || \
+							 BR2_PACKAGE_GAMESTATION_TARGET_ROCKPRO64 # PSX
+        select BR2_PACKAGE_LIBRETRO_BEETLE_SATURN     if BR2_PACKAGE_GAMESTATION_TARGET_X86  || BR2_PACKAGE_GAMESTATION_TARGET_X86_64
+        select BR2_PACKAGE_LIBRETRO_REICAST           if BR2_PACKAGE_GAMESTATION_TARGET_X86_64
+        # select BR2_PACKAGE_LIBRETRO_DOLPHIN         if BR2_PACKAGE_GAMESTATION_TARGET_X86_64
+        # select BR2_PACKAGE_LIBRETRO_PPSSPP          if BR2_PACKAGE_GAMESTATION_TARGET_X86  || BR2_PACKAGE_GAMESTATION_TARGET_X86_64 || BR2_PACKAGE_GAMESTATION_TARGET_RPI3
+        select BR2_PACKAGE_LIBRETRO_DOSBOX            if BR2_PACKAGE_GAMESTATION_TARGET_X86  || BR2_PACKAGE_GAMESTATION_TARGET_X86_64
+        select BR2_PACKAGE_LIBRETRO_VICE              if BR2_PACKAGE_GAMESTATION_TARGET_X86  || BR2_PACKAGE_GAMESTATION_TARGET_X86_64
+        select BR2_PACKAGE_LIBRETRO_MAME2016          if BR2_PACKAGE_GAMESTATION_TARGET_X86  || BR2_PACKAGE_GAMESTATION_TARGET_X86_64  
+        select BR2_PACKAGE_LIBRETRO_CITRA             if BR2_PACKAGE_GAMESTATION_TARGET_X86_64
+        select BR2_PACKAGE_LIBRETRO_KRONOS            if BR2_PACKAGE_GAMESTATION_TARGET_X86  || BR2_PACKAGE_GAMESTATION_TARGET_X86_64                                             
+        help
+          Retroarch
+
+config BR2_PACKAGE_GAMESTATION_MUPEN64
+        bool "gamestation.linux Mupen64 packages selection"
+
+        select BR2_PACKAGE_MUPEN64PLUS_CORE
+        select BR2_PACKAGE_MUPEN64PLUS_UICONSOLE
+        select BR2_PACKAGE_MUPEN64PLUS_INPUT_SDL
+        select BR2_PACKAGE_MUPEN64PLUS_AUDIO_SDL
+        select BR2_PACKAGE_MUPEN64PLUS_RSPHLE
+        select BR2_PACKAGE_MUPEN64PLUS_OMX              if BR2_PACKAGE_GAMESTATION_TARGET_RPI2 || BR2_PACKAGE_GAMESTATION_TARGET_RPI3 # rpi audio
+
+        select BR2_PACKAGE_MUPEN64PLUS_GLES2            if BR2_PACKAGE_GAMESTATION_TARGET_RPI2 || BR2_PACKAGE_GAMESTATION_TARGET_RPI3
+        select BR2_PACKAGE_MUPEN64PLUS_GLES2RICE        if BR2_PACKAGE_GAMESTATION_TARGET_RPI2 || BR2_PACKAGE_GAMESTATION_TARGET_RPI3
+        select BR2_PACKAGE_MUPEN64PLUS_GLIDEN64         if BR2_PACKAGE_GAMESTATION_TARGET_RPI2 || BR2_PACKAGE_GAMESTATION_TARGET_RPI3   || \
+                                                           BR2_PACKAGE_GAMESTATION_TARGET_X86  || BR2_PACKAGE_GAMESTATION_TARGET_X86_64 # GLIDEN64
+        select BR2_PACKAGE_MUPEN64PLUS_VIDEO_GLIDE64MK2 if BR2_PACKAGE_GAMESTATION_TARGET_X86  || BR2_PACKAGE_GAMESTATION_TARGET_X86_64    || \
+	                                                   BR2_PACKAGE_GAMESTATION_TARGET_XU4  || BR2_PACKAGE_GAMESTATION_TARGET_LEGACYXU4 || \
+							   BR2_PACKAGE_GAMESTATION_TARGET_C2   || \
+							   BR2_PACKAGE_GAMESTATION_TARGET_S905 || BR2_PACKAGE_GAMESTATION_TARGET_S912      || \
+                                                           BR2_PACKAGE_GAMESTATION_TARGET_ROCKPRO64 # GLIDE64MK2
+
+        help
+          Mupen64
+
+config BR2_PACKAGE_GAMESTATION_KODI
+       bool "gamestation.linux Kodi packages selection"
+       select BR2_PACKAGE_KODI              # kodi
+       select BR2_PACKAGE_KODI_JOYSTICK     # joysticks for kodi
+       select BR2_PACKAGE_PYTHON_PYOPENSSL  # used by some kodi plugins
+       select BR2_PACKAGE_X264              # decoder
+       select BR2_PACKAGE_X265              # decoder
+       select BR2_PACKAGE_LIBAACS           # decoder
+       select BR2_PACKAGE_LIBDVDCSS         # decoder
+       select BR2_PACKAGE_GNUTLS            # https streams
+
+       # ffmpeg enabler that i'm not sure it has an impact on kodi
+       select BR2_PACKAGE_FFMPEG_AVRESAMPLE # audio resampler
+       select BR2_PACKAGE_LIBCDIO_PARANOIA  # cd-audio
+       select BR2_PACKAGE_LIBOPENH264       # openh264
+
+       # kodi languages
+       select BR2_PACKAGE_KODI_RESOURCE_LANGUAGE_DE_DE
+       select BR2_PACKAGE_KODI_RESOURCE_LANGUAGE_ES_ES
+       select BR2_PACKAGE_KODI_RESOURCE_LANGUAGE_EU_ES
+       select BR2_PACKAGE_KODI_RESOURCE_LANGUAGE_FR_FR
+       select BR2_PACKAGE_KODI_RESOURCE_LANGUAGE_IT_IT
+       select BR2_PACKAGE_KODI_RESOURCE_LANGUAGE_PT_BR
+       select BR2_PACKAGE_KODI_RESOURCE_LANGUAGE_SV_SE
+       select BR2_PACKAGE_KODI_RESOURCE_LANGUAGE_TR_TR
+       select BR2_PACKAGE_KODI_RESOURCE_LANGUAGE_ZH_CN
+
+       # packages for kodi
+       select BR2_PACKAGE_MYSQL
+
+       # default kodi packages for gamestation
+       select BR2_PACKAGE_KODI_MYSQL
+       select BR2_PACKAGE_KODI_ALSA_LIB
+       select BR2_PACKAGE_KODI_AVAHI
+       select BR2_PACKAGE_KODI_DBUS
+       select BR2_PACKAGE_KODI_LIBCEC
+       select BR2_PACKAGE_KODI_LIRC
+       select BR2_PACKAGE_KODI_LIBMICROHTTPD
+       select BR2_PACKAGE_KODI_LIBNFS
+       select BR2_PACKAGE_KODI_LIBSHAIRPLAY
+       select BR2_PACKAGE_KODI_LIBSMBCLIENT
+       select BR2_PACKAGE_KODI_LIBSSH
+       select BR2_PACKAGE_KODI_LIBTHEORA
+       select BR2_PACKAGE_KODI_LIBVA                    if BR2_PACKAGE_XORG7 && BR2_PACKAGE_KODI_GL_EGL
+       select BR2_PACKAGE_KODI_AUDIODECODER_MODPLUG
+       select BR2_PACKAGE_KODI_AUDIODECODER_NOSEFART
+       select BR2_PACKAGE_KODI_AUDIODECODER_OPUS
+       select BR2_PACKAGE_KODI_AUDIODECODER_SIDPLAY
+       select BR2_PACKAGE_KODI_AUDIODECODER_SNESAPU
+       select BR2_PACKAGE_KODI_AUDIODECODER_STSOUND
+       select BR2_PACKAGE_KODI_AUDIODECODER_TIMIDITY
+       select BR2_PACKAGE_KODI_AUDIODECODER_VGMSTREAM
+       select BR2_PACKAGE_KODI_AUDIOENCODER_FLAC
+       select BR2_PACKAGE_KODI_AUDIOENCODER_LAME
+       select BR2_PACKAGE_KODI_AUDIOENCODER_VORBIS
+       select BR2_PACKAGE_KODI_AUDIOENCODER_WAV
+       select BR2_PACKAGE_KODI_INPUTSTREAM_RTMP
+       select BR2_PACKAGE_KODI_PVR_ARGUSTV
+       select BR2_PACKAGE_KODI_PVR_DVBLINK
+       select BR2_PACKAGE_KODI_PVR_DVBVIEWER
+       select BR2_PACKAGE_KODI_PVR_FILMON
+       select BR2_PACKAGE_KODI_PVR_HDHOMERUN
+       select BR2_PACKAGE_KODI_PVR_HTS
+       select BR2_PACKAGE_KODI_PVR_IPTVSIMPLE
+       select BR2_PACKAGE_KODI_PVR_MEDIAPORTAL_TVSERVER
+       select BR2_PACKAGE_KODI_PVR_MYTHTV
+       select BR2_PACKAGE_KODI_PVR_NEXTPVR
+       select BR2_PACKAGE_KODI_PVR_NJOY
+       select BR2_PACKAGE_KODI_PVR_PCTV
+       select BR2_PACKAGE_KODI_PVR_STALKER
+       select BR2_PACKAGE_KODI_PVR_VBOX
+       select BR2_PACKAGE_KODI_PVR_VDR_VNSI
+       select BR2_PACKAGE_KODI_PVR_VUPLUS
+       select BR2_PACKAGE_KODI_PVR_WMC
+       select BR2_PACKAGE_KODI_UPNP
+       select BR2_PACKAGE_KODI_LIBBLURAY
+
+       #
+       select BR2_PACKAGE_KODI_SUPERREPO_REPOSITORIES
+       select BR2_PACKAGE_KODI_SUPERREPO_ALL
+       select BR2_PACKAGE_KODI_PLUGIN_VIDEO_FILMON
+
+       # GBM
+       select BR2_PACKAGE_KODI_GBM if BR2_PACKAGE_GAMESTATION_TARGET_XU4
+
+       help
+        Tools to extends the gamestation system (but not required)
+
+config BR2_PACKAGE_GAMESTATION_LINUX_FIRMWARES
+       bool "gamestation.linux Firmwares packages selection"
+
+       select BR2_PACKAGE_ALLLINUXFIRMWARES
+
+       # common firmwares
+       select BR2_PACKAGE_UX500_FIRMWARE
+       select BR2_PACKAGE_WILC1000_FIRMWARE
+       select BR2_PACKAGE_ZD1211_FIRMWARE
+       select BR2_PACKAGE_B43_FIRMWARE
+
+       # x86 (maybe some firmware could be for all, to be checked)
+       select BR2_PACKAGE_WILINK_BT_FIRMWARE if BR2_PACKAGE_GAMESTATION_TARGET_X86  || BR2_PACKAGE_GAMESTATION_TARGET_X86_64
+
+config BR2_PACKAGE_GAMESTATION_XORG
+       bool "gamestation.linux xorgs packages selection"
+
+       select BR2_PACKAGE_XORG7
+       select BR2_PACKAGE_XSERVER_XORG_SERVER
+
+       # drivers
+       select BR2_PACKAGE_XDRIVER_XF86_INPUT_EVDEV
+       select BR2_PACKAGE_XDRIVER_XF86_INPUT_KEYBOARD
+       select BR2_PACKAGE_XDRIVER_XF86_INPUT_LIBINPUT
+       select BR2_PACKAGE_XDRIVER_XF86_VIDEO_ARK
+       select BR2_PACKAGE_XDRIVER_XF86_VIDEO_AST
+       select BR2_PACKAGE_XDRIVER_XF86_VIDEO_ATI
+       select BR2_PACKAGE_XDRIVER_XF86_VIDEO_CIRRUS
+       select BR2_PACKAGE_XDRIVER_XF86_VIDEO_FBDEV
+       select BR2_PACKAGE_XDRIVER_XF86_VIDEO_VMWARE         if BR2_PACKAGE_GAMESTATION_TARGET_X86
+       select BR2_PACKAGE_XDRIVER_XF86_VIDEO_GLINT
+       select BR2_PACKAGE_XDRIVER_XF86_VIDEO_I128
+       select BR2_PACKAGE_XDRIVER_XF86_VIDEO_INTEL
+       select BR2_PACKAGE_XDRIVER_XF86_VIDEO_MACH64
+       select BR2_PACKAGE_XDRIVER_XF86_VIDEO_MGA
+       select BR2_PACKAGE_XDRIVER_XF86_VIDEO_NEOMAGIC
+       select BR2_PACKAGE_XDRIVER_XF86_VIDEO_NOUVEAU
+       select BR2_PACKAGE_XDRIVER_XF86_VIDEO_NV
+       select BR2_PACKAGE_XDRIVER_XF86_VIDEO_OPENCHROME
+       select BR2_PACKAGE_XDRIVER_XF86_VIDEO_QXL
+       select BR2_PACKAGE_XDRIVER_XF86_VIDEO_R128
+       select BR2_PACKAGE_XDRIVER_XF86_VIDEO_SAVAGE
+       select BR2_PACKAGE_XDRIVER_XF86_VIDEO_SILICONMOTION
+       select BR2_PACKAGE_XDRIVER_XF86_VIDEO_SIS
+       select BR2_PACKAGE_XDRIVER_XF86_VIDEO_TDFX
+       select BR2_PACKAGE_XDRIVER_XF86_VIDEO_TGA
+       select BR2_PACKAGE_XDRIVER_XF86_VIDEO_TRIDENT
+       select BR2_PACKAGE_XDRIVER_XF86_VIDEO_VESA
+       select BR2_PACKAGE_XDRIVER_XF86_VIDEO_VOODOO
+
+       # applications
+       select BR2_PACKAGE_XAPP_SETXKBMAP
+       select BR2_PACKAGE_XAPP_XEV
+       select BR2_PACKAGE_XAPP_XINIT
+       select BR2_PACKAGE_XAPP_XINPUT
+       select BR2_PACKAGE_XAPP_XRANDR # required for resolution manipulation
+       select BR2_PACKAGE_XAPP_XSET   # X11 Xset command
+       select BR2_PACKAGE_LIBEPOXY    # required to enable xorg glamor
+
+       # nvidia
+       select BR2_PACKAGE_LIBGLVND             if BR2_PACKAGE_GAMESTATION_TARGET_X86    # already set by nvidia for x86_64, but required on x86 for pcsx2
+       select BR2_PACKAGE_NVIDIA_DRIVER        if BR2_PACKAGE_GAMESTATION_TARGET_X86_64
+       select BR2_PACKAGE_NVIDIA_DRIVER_XORG   if BR2_PACKAGE_GAMESTATION_TARGET_X86_64
+       select BR2_PACKAGE_NVIDIA_DRIVER_MODULE if BR2_PACKAGE_GAMESTATION_TARGET_X86_64
+
+       # mesa
+       select BR2_PACKAGE_MESA3D
+       select BR2_PACKAGE_MESA3D_GALLIUM_DRIVER_NOUVEAU
+       select BR2_PACKAGE_MESA3D_GALLIUM_DRIVER_R600
+       select BR2_PACKAGE_MESA3D_GALLIUM_DRIVER_RADEONSI
+       select BR2_PACKAGE_MESA3D_GALLIUM_DRIVER_SWRAST
+       select BR2_PACKAGE_MESA3D_DRI_DRIVER_SWRAST
+       select BR2_PACKAGE_MESA3D_DRI_DRIVER_I915
+       select BR2_PACKAGE_MESA3D_DRI_DRIVER_I965
+       select BR2_PACKAGE_MESA3D_OPENGL_EGL
+       select BR2_PACKAGE_MESA3D_DEMOS
+       select BR2_PACKAGE_MESA3D_LLVM
+       select BR2_PACKAGE_MESA3D_VULKAN_DRIVER_INTEL
+       select BR2_PACKAGE_MESA3D_GALLIUM_DRIVER_ETNAVIV

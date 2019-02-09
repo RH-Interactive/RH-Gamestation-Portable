@@ -1,0 +1,34 @@
+#!/bin/sh
+#
+#
+
+log=/gamestation/share/system/logs/gamestation.log
+systemsetting="python /usr/lib/python2.7/site-packages/configgen/settings/gamestationSettings.py"
+
+case "$1" in
+  start)
+	enabled="`$systemsetting  -command load -key system.es.atstartup`"
+        if [ "$enabled" != "0" ];then
+                gamestation-resolution minTomaxResolution
+		settings_lang="`$systemsetting -command load -key system.language`"
+        	recallog "starting emulationstation with lang = $settings_lang"
+                command="HOME=/gamestation/share/system LANG=\"${settings_lang}.UTF-8\" SDL_VIDEO_GL_DRIVER=/usr/lib/libGLESv2.so SDL_VIDEO_EGL_DRIVER=/usr/lib/libGLESv2.so SDL_NOMOUSE=1 /usr/bin/emulationstation"
+        	recallog "Starting emulationstation with command : "
+        	recallog "$command"
+        	eval $command >> $log &
+	fi
+	;;
+  stop)
+	killall emulationstation
+	;;
+  restart|reload)
+        "$0" stop
+        "$0" start
+	;;
+  *)
+	echo "Usage: $0 {start|stop|restart}"
+	exit 1
+esac
+
+exit $?
+

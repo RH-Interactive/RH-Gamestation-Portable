@@ -1,0 +1,5 @@
+config BR2_PACKAGE_GAMESTATION_SHADERS
+        bool "gamestation shaders"
+	depends on BR2_PACKAGE_RETROARCH
+        help
+          Gamestation shaders for retroarch

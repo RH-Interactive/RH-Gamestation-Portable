@@ -1,0 +1,7 @@
+config BR2_PACKAGE_GAMESTATION_INITRAMFS
+	bool "Gamestation initramfs"
+	default n
+	help
+	  A simple initramfs based on busybox.
+
+	  http://busybox.net/

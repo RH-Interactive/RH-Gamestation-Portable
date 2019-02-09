@@ -1,0 +1,6 @@
+config BR2_PACKAGE_GAMESTATION_THEMES
+        bool "gamestation ES themes"
+        help
+          Emulationstation themes for gamestation.
+
+	  https://github.com/gamestation-linux/gamestation-themes

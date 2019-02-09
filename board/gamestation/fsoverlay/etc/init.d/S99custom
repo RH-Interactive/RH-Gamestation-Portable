@@ -1,0 +1,3 @@
+#!/bin/bash
+
+test -e "/gamestation/share/system/custom.sh" && /gamestation/share/system/custom.sh $1

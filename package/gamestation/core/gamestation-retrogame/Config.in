@@ -1,0 +1,4 @@
+config BR2_PACKAGE_GAMESTATION_RETROGAME
+    bool "gamestation-retrogame"
+    help
+      Gamestation-retrogame is optimized for Pi2 and manage a 2 player panel with an ESC key

@@ -1,0 +1,9 @@
+#!/bin/sh
+log="/gamestation/share/system/logs/gamestation.log"
+if [[ "$1" == "-e" ]];then
+  shift
+  echo "`logtime` : $@" >> $log
+  echo "$@"
+else
+  echo "`logtime` : $@" >> $log
+fi
